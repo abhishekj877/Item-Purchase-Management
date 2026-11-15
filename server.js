@@ -56,7 +56,7 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 async function start() {
-  if (!Object.hasOwn(process.env, "DB_PASSWORD") && !Object.hasOwn(process.env, "MYSQLPASSWORD")) {
+  if (!Object.hasOwn(process.env, "DB_PASSWORD") && !Object.hasOwn(process.env, "mysql1229")) {
     console.error("MySQL password is not configured. Copy .env.example to .env and set DB_PASSWORD, then restart the server.");
     await pool.end();
     process.exitCode = 1;
