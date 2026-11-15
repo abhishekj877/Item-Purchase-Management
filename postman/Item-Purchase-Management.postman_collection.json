@@ -1,0 +1,111 @@
+{
+  "info": {
+    "_postman_id": "d35de5ba-e427-4ca9-8ef4-bce7cc8c35db",
+    "name": "Item & Purchase Management System",
+    "description": "REST API requests for the Node.js, Express, and MySQL assignment project. Purchase deletion is intentionally not exposed.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "itemTypeId", "value": "1" },
+    { "key": "itemId", "value": "1" },
+    { "key": "purchaseId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Check API and database",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/health" }
+        }
+      ]
+    },
+    {
+      "name": "Item types",
+      "item": [
+        { "name": "List item types", "request": { "method": "GET", "url": "{{baseUrl}}/api/item-types" } },
+        {
+          "name": "Create item type",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"type_name\": \"Electronics\"\n}" },
+            "url": "{{baseUrl}}/api/item-types"
+          }
+        },
+        {
+          "name": "Update item type",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"type_name\": \"Office Electronics\"\n}" },
+            "url": "{{baseUrl}}/api/item-types/{{itemTypeId}}"
+          }
+        },
+        { "name": "Delete item type (only if unused)", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/item-types/{{itemTypeId}}" } }
+      ]
+    },
+    {
+      "name": "Items",
+      "item": [
+        { "name": "List active items", "request": { "method": "GET", "url": "{{baseUrl}}/api/items" } },
+        { "name": "List all items", "request": { "method": "GET", "url": "{{baseUrl}}/api/items?includeInactive=true" } },
+        { "name": "Get item", "request": { "method": "GET", "url": "{{baseUrl}}/api/items/{{itemId}}" } },
+        {
+          "name": "Create item",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Laptop\",\n  \"item_type_id\": {{itemTypeId}},\n  \"purchase_date\": \"2026-08-25\",\n  \"stock_available\": 10,\n  \"active\": true\n}" },
+            "url": "{{baseUrl}}/api/items"
+          }
+        },
+        {
+          "name": "Update item",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Laptop\",\n  \"item_type_id\": {{itemTypeId}},\n  \"purchase_date\": \"2026-08-25\",\n  \"stock_available\": 10,\n  \"active\": true\n}" },
+            "url": "{{baseUrl}}/api/items/{{itemId}}"
+          }
+        },
+        {
+          "name": "Deactivate item",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"active\": false\n}" },
+            "url": "{{baseUrl}}/api/items/{{itemId}}/status"
+          }
+        },
+        { "name": "Delete item (only without purchase history)", "request": { "method": "DELETE", "url": "{{baseUrl}}/api/items/{{itemId}}" } }
+      ]
+    },
+    {
+      "name": "Purchases",
+      "item": [
+        { "name": "List purchase history", "request": { "method": "GET", "url": "{{baseUrl}}/api/purchases" } },
+        { "name": "Get purchase details", "request": { "method": "GET", "url": "{{baseUrl}}/api/purchases/{{purchaseId}}" } },
+        {
+          "name": "Create multi-item purchase",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"purchase_date\": \"2026-08-25\",\n  \"items\": [\n    { \"item_id\": {{itemId}}, \"quantity\": 2 }\n  ]\n}" },
+            "url": "{{baseUrl}}/api/purchases"
+          }
+        },
+        {
+          "name": "Update purchase and adjust stock",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"purchase_date\": \"2026-08-26\",\n  \"items\": [\n    { \"item_id\": {{itemId}}, \"quantity\": 3 }\n  ]\n}" },
+            "url": "{{baseUrl}}/api/purchases/{{purchaseId}}"
+          }
+        }
+      ]
+    }
+  ]
+}
